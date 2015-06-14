@@ -27,11 +27,11 @@ public class Borders : MonoBehaviour
     {
         if (_objectPos.x >= _screenWidth)
         {
-            _transform.position = MainCamera.ScreenToWorldPoint(new Vector3(0, _objectPos.y, 1));
+            _transform.position = MainCamera.ScreenToWorldPoint(new Vector3(0, _objectPos.y, _transform.position.z));
         }
         else if (_objectPos.x <= 0)
         {
-            _transform.position = MainCamera.ScreenToWorldPoint(new Vector3(_screenWidth, _objectPos.y, 1));
+            _transform.position = MainCamera.ScreenToWorldPoint(new Vector3(_screenWidth, _objectPos.y, _transform.position.z));
         }
     } 
 }
