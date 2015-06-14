@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Background : MonoBehaviour
 {
-    public float screenWidth, screenHeight, backgroundWidth, backgroundHeight, realScreenWidth, realScreenHeight;
+    float screenWidth, screenHeight, backgroundWidth, backgroundHeight, realScreenWidth, realScreenHeight;
     Camera _mainCamera;
     Transform _transformMainCamera, _transform;
     float defalutHeight = 200f, defaultWidth;
@@ -40,7 +40,6 @@ public class Background : MonoBehaviour
         if (realScreenWidth / realScreenHeight < backgroundWidth / backgroundHeight) SetScreenWidth(backgroundWidth);
         else SetScreenHeight(backgroundHeight);
     }
-
 
     void SetScreenHeight(float height)
     {
