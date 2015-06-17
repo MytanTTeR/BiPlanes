@@ -3,7 +3,8 @@ using System.Collections;
 
 public class BiPlaneController : MonoBehaviour
 {
-    bool addForce, removeForce, rotationUp, rotationDown;
+    bool addForce, removeForce, rotationUp, rotationDown, shoot;
+
 
     public bool RotationDown
     {
@@ -25,6 +26,11 @@ public class BiPlaneController : MonoBehaviour
         get { return addForce; }
     }
 
+    public bool Shoot
+    {
+        get { return shoot; }
+    }
+
     void FixedUpdate()
     {
         UpdateParams();
@@ -32,6 +38,7 @@ public class BiPlaneController : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) rotationDown = true;
         if (Input.GetKey(KeyCode.W)) addForce = true;
         if (Input.GetKey(KeyCode.S)) removeForce = true;
+        if (Input.GetKey(KeyCode.Mouse0)) shoot = true;
     }
 
     private void UpdateParams()
@@ -40,5 +47,6 @@ public class BiPlaneController : MonoBehaviour
         rotationDown = false;
         addForce = false;
         removeForce = false;
+        shoot = false;
     }
 }

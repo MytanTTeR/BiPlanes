@@ -33,9 +33,7 @@ public class Shooting : MonoBehaviour {
             ShellInstance.GetComponent<Rigidbody2D>().AddForce(transform.right * GunType.ShootingForce);
             _coolDown = GunType.ShootingCoolDown;
         }
-
-        _controller.Shoot = false;
-    }
+    }//+
 
     private void CoolDown()
     {
