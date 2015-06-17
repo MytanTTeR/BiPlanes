@@ -9,15 +9,15 @@ public class Background : MonoBehaviour
     float defalutHeight = 200f, defaultWidth;
 
     void Start()
-    {
+    { 
         _mainCamera = Camera.main;
-        Texture2D backgroundTexture = GetComponent<SpriteRenderer>().sprite.texture;
-
-        backgroundHeight = backgroundTexture.height;
-        backgroundWidth = backgroundTexture.width;
-
         _transform = transform;
         _transformMainCamera = _mainCamera.transform;
+
+        Texture2D backgroundTexture = GetComponent<SpriteRenderer>().sprite.texture;
+
+        backgroundHeight = backgroundTexture.height * _transform.localScale.y;
+        backgroundWidth = backgroundTexture.width * _transform.localScale.x;
     }
 
     void UpdateParams()

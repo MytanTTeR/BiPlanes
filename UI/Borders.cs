@@ -12,7 +12,6 @@ public class Borders : MonoBehaviour
     void Start()
     {
         _transform = transform;
-        Debug.Log(_transform.GetComponent<SpriteRenderer>().sprite.textureRect.width);
     }
 
     void Update()
@@ -20,8 +19,8 @@ public class Borders : MonoBehaviour
         _screenWidth = Screen.width;
         _screenHeight = Screen.height;
 
-        _objectPos = MainCamera.WorldToScreenPoint(transform.position);
-        _objectWidth = _transform.localScale.x * 200f;
+        _objectPos = MainCamera.WorldToScreenPoint(transform.position); 
+        _objectWidth = _transform.localScale.x * _transform.GetComponent<SpriteRenderer>().sprite.textureRect.width;
 
         CriticalPosition();
     }
