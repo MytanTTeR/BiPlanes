@@ -1,19 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class ObjectMovement : MonoBehaviour {
 
     public float Speed;
-    Rigidbody2D _rigidbody;
+    Transform _transform;
 
-	void Start () 
+    void Start()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-	}
+        _transform = GetComponent<Transform>();
+    }
 	
-	void Update () 
+	void FixedUpdate () 
     {
-        _rigidbody.velocity = (transform.right * Speed).GetVector2();
+        _transform.Translate((transform.right * Speed).ConvertToVector2());
 	}
 }

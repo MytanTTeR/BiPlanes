@@ -3,15 +3,18 @@ using System.Collections;
 
 public class Borders : MonoBehaviour
 {
-    public Camera MainCamera;
+    Camera _mainCamera;
     int _screenWidth, _screenHeight;
     float _scenePos, _objectWidth;
     Vector2 _objectPos;
     Transform _transform;
+    Rect spriteRect;
 
     void Start()
     {
+        _mainCamera = Camera.main;
         _transform = transform;
+        spriteRect = _transform.GetComponent<SpriteRenderer>().sprite.textureRect;
     }
 
     void Update()
@@ -19,21 +22,17 @@ public class Borders : MonoBehaviour
         _screenWidth = Screen.width;
         _screenHeight = Screen.height;
 
-        _objectPos = MainCamera.WorldToScreenPoint(transform.position); 
-        _objectWidth = _transform.localScale.x * _transform.GetComponent<SpriteRenderer>().sprite.textureRect.width;
+        _objectPos = _mainCamera.WorldToScreenPoint(transform.position);
+        _objectWidth = _transform.localScale.x * spriteRect.width;
 
         CriticalPosition();
     }
 
     void CriticalPosition()
     {
-        if (_objectPos.x - _objectWidth >= _screenWidth)
-        {
-            _transform.position = MainCamera.ScreenToWorldPoint(new Vector3(-_objectWidth, _objectPos.y, _transform.position.z));
-        }
-        else if (_objectPos.x + _objectWidth <= 0)
-        {
-            _transform.position = MainCamera.ScreenToWorldPoint(new Vector3(_screenWidth + _objectWidth, _objectPos.y, _transform.position.z));
-        }
-    } 
+        float z = _transform.position.z;
+        if (_objectPos.x - _objectWidth >= _screenWidth) _transform.position = _mainCamera.ScreenToWorldPoint(new Vector3(-_objectWidth, _objectPos.y, _transform.position.z));
+        else if (_objectPos.x + _objectWidth <= 0) _transform.position = _mainCamera.ScreenToWorldPoint(new Vector3(_screenWidth + _objectWidth, _objectPos.y, _transform.position.z));
+        _transform.position = new Vector3(_transform.position.x, _transform.position.y, z);
+    }
 }
