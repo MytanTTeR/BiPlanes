@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(BiPlaneController))]
-[RequireComponent(typeof(BiPlaneRigidbody))]
+[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Engine))]
 public class BiPlane : MonoBehaviour
 {
-    public float wingWidth, rotationScale;
-    Engine _engine;
-    BiPlaneRigidbody _rigidbody;
-    BiPlaneController _controller;
+    public float rotationScale;
+    public Player owner;
+
+    Vector3 curPos, lastPos;
+
     Transform _transform;
+    BiPlaneController _controller;
+    Engine _engine;
+    Rigidbody2D _rigidbody2d;
 
     void Start()
     {
-        _rigidbody = GetComponent<BiPlaneRigidbody>();
+        _rigidbody2d = GetComponent<Rigidbody2D>();
         _engine = GetComponent<Engine>();
         _controller = GetComponent<BiPlaneController>();
         _transform = GetComponent<Transform>();
@@ -24,16 +27,8 @@ public class BiPlane : MonoBehaviour
     {
         UpdateForce();
         UpdateRotation();
-        if (_engine.enabled)
-        {
-            _rigidbody.OtherForce = (_transform.right * _engine.Power).GetVector2();
-            _rigidbody.gravityScale = _rigidbody.mass - Mathf.Clamp(GetWing() * _engine.Power / 10f, 0f, _rigidbody.mass);
-        }
-        else
-        {
-            _rigidbody.gravityScale = 1;
-        }
-    } //Debug!!!
+        Move();
+    } //+
 
     void UpdateForce()
     {
@@ -44,21 +39,37 @@ public class BiPlane : MonoBehaviour
     void UpdateRotation()
     {
         Vector3 rot = Vector3.zero;
-        if (_controller.RotationUp) rot.z -= Time.deltaTime * rotationScale / wingWidth;
-        if (_controller.RotationDown) rot.z += Time.deltaTime * rotationScale / wingWidth;
+        if (_controller.RotationUp) rot.z -= Time.deltaTime * rotationScale;
+        if (_controller.RotationDown) rot.z += Time.deltaTime * rotationScale;
         _transform.localEulerAngles += rot;
-    } //?
+    } //#
 
-    public float GetWing()
+    void Move()
     {
-        return wingWidth - wingWidth * 90f / rotationAngle();
-    } //+
+        _rigidbody2d.velocity = _transform.right * _engine.Power;
+    }
 
-    private float rotationAngle()
+    float rotationAngle()
     {
-        Vector2 direction = _transform.right.GetVector2();
+        Vector2 direction = _transform.right.ConvertToVector2();
         float rotationLeft = Vector2.Angle(direction, -Vector2.right), rotationRight = Vector2.Angle(direction, Vector2.right);
         if (rotationLeft > rotationRight) return rotationRight;
         else return rotationLeft;
-    } //Test!!
+    } //+
+
+    public void SetOwner(Player owner)
+    {
+        this.owner = owner;
+    }
+
+    void Dead()
+    {
+        owner.Kill();
+        Destroy(gameObject);
+    }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.tag == "BiPlane" || coll.gameObject.tag == "StaticObject") Dead();
+    }
 }

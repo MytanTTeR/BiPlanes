@@ -3,12 +3,12 @@ using System.Collections;
 
 public static class VectorExtension
 {
-    public static Vector2 GetVector2(this Vector3 vector)
+    public static Vector2 ConvertToVector2(this Vector3 vector)
     {
         return new Vector2(vector.x, vector.y);
     }
 
-    public static Vector3 GetVector3(this Vector2 vector)
+    public static Vector3 ConvertToVector3(this Vector2 vector)
     {
         return new Vector3(vector.x, vector.y, 0);
     }

@@ -4,19 +4,12 @@ using System.Collections;
 public class Engine : MonoBehaviour
 {
     public float maxPowerEngine;
-    float _powerEngine;
 
-    void Start()
-    {
-        _powerEngine = 0f;
-    }
+    float _powerEngine = 0f;
 
     public float Power
     {
-        get
-        {
-            return _powerEngine;
-        }
+        get { return _powerEngine; }
     }
 
     public void AddForce()
