@@ -14,6 +14,4 @@ public class Player : MonoBehaviour
     {
         Dead.Invoke();
     }
-
-    public GameObject Gun { get; set; }
 }

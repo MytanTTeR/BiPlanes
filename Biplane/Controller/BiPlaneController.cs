@@ -3,8 +3,13 @@ using System.Collections;
 
 public abstract class BiPlaneController : MonoBehaviour
 {
-    protected bool addForce, removeForce, rotationUp, rotationDown, shoot;
+    protected void Start()
+    {
+        BiPlane biplane = GetComponent<BiPlane>();
+        if (biplane != null) biplane.SetController(this);
+    }
 
+    protected bool addForce, removeForce, rotationUp, rotationDown, shoot;
 
     public bool RotationDown
     {

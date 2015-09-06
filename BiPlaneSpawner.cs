@@ -3,9 +3,12 @@ using System.Collections;
 
 public class BiPlaneSpawner : MonoBehaviour {
 
+    public enum Position { Left, Right }
+
     public Player owner;
+    public Position Orientation;
     Transform _transform;
-    Transform BiPlane;
+    Transform spawnedBiPlane;
     bool spawn = true;
 
     void Start()
@@ -28,8 +31,16 @@ public class BiPlaneSpawner : MonoBehaviour {
     {
         Transform _biplane = owner.BiPlanePrefab.GetComponent<Transform>();
         Vector3 pos = new Vector3(_transform.position.x, _transform.position.y, _biplane.position.z);
-        BiPlane = (Transform)Instantiate(_biplane, _transform.position, _transform.rotation);
-        BiPlane biplane = BiPlane.GetComponent<BiPlane>();
+        spawnedBiPlane = (Transform)Instantiate(_biplane, _transform.position, _transform.rotation);
+
+        if (Orientation == Position.Left)
+        {
+            Vector3 scale = spawnedBiPlane.localScale;
+            scale.x *= -1f;
+            spawnedBiPlane.localScale = scale;
+        }
+
+        BiPlane biplane = spawnedBiPlane.GetComponent<BiPlane>();
         if (biplane != null) biplane.SetOwner(owner);
         spawn = false;
     }

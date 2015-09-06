@@ -5,15 +5,32 @@ using System.Collections;
 [RequireComponent(typeof(Engine))]
 public class BiPlane : MonoBehaviour
 {
+    public enum BiPlaneState { Pause, Work }
     public float rotationScale;
-    public Player owner;
 
-    Vector3 curPos, lastPos;
-
+    Player _owner;
+    BiPlaneState _state = BiPlaneState.Work;
     Transform _transform;
     BiPlaneController _controller;
     Engine _engine;
     Rigidbody2D _rigidbody2d;
+
+    public void SetOwner(Player owner)
+    {
+        this._owner = owner;
+        CheckParams();
+    }
+
+    public void SetController(BiPlaneController controller)
+    {
+        this._controller = controller;
+        CheckParams();
+    }
+
+    void CheckParams()
+    {
+        if (_rigidbody2d != null || _engine != null || _controller != null || _transform != null) _state = BiPlaneState.Work;
+    }
 
     void Start()
     {
@@ -21,13 +38,17 @@ public class BiPlane : MonoBehaviour
         _engine = GetComponent<Engine>();
         _controller = GetComponent<BiPlaneController>();
         _transform = GetComponent<Transform>();
+        if (_controller == null) _state = BiPlaneState.Pause;
     } //+
 
     void FixedUpdate()
     {
-        UpdateForce();
-        UpdateRotation();
-        Move();
+        if (_state == BiPlaneState.Work)
+        {
+            UpdateForce();
+            UpdateRotation();
+            Move();
+        }
     } //+
 
     void UpdateForce()
@@ -57,14 +78,9 @@ public class BiPlane : MonoBehaviour
         else return rotationLeft;
     } //+
 
-    public void SetOwner(Player owner)
-    {
-        this.owner = owner;
-    }
-
     void Dead()
     {
-        owner.Kill();
+        _owner.Kill();
         Destroy(gameObject);
     }
 
